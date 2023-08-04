@@ -3,6 +3,7 @@ import CartItem from "../components/CartItem";
 import Header from "../components/Header";
 import { replaceCart } from "../store/cart-slice";
 import { useEffect, useState } from "react";
+import { CChart } from "@coreui/react-chartjs";
 async function callAPIPayment(sum, idOrder) {
     const url =
       "http://localhost:8080/paypal/make/payment?sum=" +
@@ -113,6 +114,27 @@ const Cart = () => {
                         </div>
                         <button onClick={handleOnClickPayment} className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
                     </div>
+
+
+
+                    <CChart
+                        type="doughnut"
+                        data={{
+                            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+                            datasets: [
+                            {
+                                backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                                data: [40, 20, 80, 10],
+                            },
+                            ],
+                        }}
+                    />
+
+
+
+
+
+
                 </div>
             </div>
         </div>

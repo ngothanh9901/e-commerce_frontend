@@ -5,10 +5,10 @@ const OrderHistory = () => {
         <>
             <Header/>
             <div className="container mx-auto mb-[20px] mt-[60px]">
-                <div>
+                {/* <div>
                     <h1>Order History</h1>
                     <p>Here is your order history, purchases</p>
-                </div>
+                </div> */}
                 
                 <div>
                     <div className="flex flex-row">

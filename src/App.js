@@ -8,6 +8,9 @@ import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import Products from './pages/Products';
 import OrderHistory from './pages/OrderHistory';
+import FormRegisterUser from './pages/FormRegisterUser';
+import {action as registerAction} from "./pages/FormRegisterUser"
+
 const router = createBrowserRouter([
 
   {
@@ -15,7 +18,7 @@ const router = createBrowserRouter([
     element:<RootLayout/>,
     loader: async ({request}) => {
       const url = new URL(request.url);
-      const token = url.searchParams.get("token");
+      const token = url.searchParams.get("token-google");
         if(token) {
           localStorage.setItem('accessToken', token);
         }
@@ -65,8 +68,13 @@ const router = createBrowserRouter([
         action:authAction,
       },
     ]
+  },
+  {
+    path:'/register/user',
+    element:<FormRegisterUser/>,
+    action:registerAction,
   }
-  
+
 
 
 
