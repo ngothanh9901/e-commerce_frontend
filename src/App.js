@@ -1,25 +1,79 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Home from './pages/Home';
+import RootLayout from './pages/Root';
+import Login from './pages/Login';
+import {action as authAction} from './pages/Login';
+import Cart from './pages/Cart';
+import ProductDetail from './pages/ProductDetail';
+import Products from './pages/Products';
+import OrderHistory from './pages/OrderHistory';
+const router = createBrowserRouter([
+
+  {
+    path:'/',
+    element:<RootLayout/>,
+    loader: async ({request}) => {
+      const url = new URL(request.url);
+      const token = url.searchParams.get("token");
+        if(token) {
+          localStorage.setItem('accessToken', token);
+        }
+        console.log(token);
+        return token;
+    },
+    children:[
+        {
+          index:true,
+          element:<Home/>,
+          loader: async () => {
+
+            const url = "http://localhost:8080/api/product?pageNumber=1&pageSize=12";
+            const response = await fetch(url, {method: 'GET',}).then(data => data.json());
+            return response;
+        }
+      },
+
+      {
+        path:'/product/:id',
+        element:<ProductDetail/>,
+        loader: async ({params}) => {
+
+          const url = `http://localhost:8080/api/product/${params.id}`;
+          const response = await fetch(url, {method: 'GET',}).then(data => data.json());
+          return response;
+        }
+      },
+      {path:'/cart',element:<Cart/>},
+      {path:'/order',element: <OrderHistory/>},      
+      {path:'products',element:<Products/>},
+      // {
+      //   path:'/login',
+      //   element:<Login/>,
+      //   action:authAction
+      // }
+    ],
+  },
+  {
+    path:'/login',
+    element:<RootLayout/>,
+    
+    children:[
+      {
+        index:true,
+        element:<Login/>,
+        action:authAction,
+      },
+    ]
+  }
+  
+
+
+
+]);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <RouterProvider router={router} />
 }
 
 export default App;
